@@ -1,4 +1,4 @@
-package ru.s3v3nice.htmlwordstats;
+package ru.s3v3nice.htmlwordstats.log;
 
 import java.io.File;
 import java.io.IOException;

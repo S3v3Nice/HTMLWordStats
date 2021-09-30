@@ -1,5 +1,8 @@
 package ru.s3v3nice.htmlwordstats;
 
+import ru.s3v3nice.htmlwordstats.html.HTMLTextTool;
+import ru.s3v3nice.htmlwordstats.log.Log;
+
 import java.io.File;
 import java.util.Scanner;
 

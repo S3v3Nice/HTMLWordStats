@@ -1,5 +1,9 @@
 package ru.s3v3nice.htmlwordstats;
 
+import ru.s3v3nice.htmlwordstats.html.IHTMLTextTool;
+import ru.s3v3nice.htmlwordstats.log.ILog;
+import ru.s3v3nice.htmlwordstats.log.Log;
+
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

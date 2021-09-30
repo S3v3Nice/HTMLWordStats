@@ -1,4 +1,4 @@
-package ru.s3v3nice.htmlwordstats;
+package ru.s3v3nice.htmlwordstats.html;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
