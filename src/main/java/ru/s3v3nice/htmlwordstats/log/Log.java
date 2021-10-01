@@ -27,7 +27,7 @@ public class Log implements ILog {
      * @param msg сообщение об ошибке
      */
     public void error(String msg) {
-        System.out.println(msg);
+        System.out.println("[ОШИБКА] " + msg);
         logger.severe(msg + "\n");
     }
 }
