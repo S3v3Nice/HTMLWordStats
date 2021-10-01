@@ -8,10 +8,8 @@ public class Log implements ILog {
     private final Logger logger;
 
     public Log(String logFilePath) {
-        logger = Logger.getLogger("");
-        for (Handler handler : logger.getHandlers()) {
-            logger.removeHandler(handler);
-        }
+        logger = Logger.getLogger("htmlwordstats");
+        logger.setUseParentHandlers(false);
 
         try {
             File logFile = new File(logFilePath);
