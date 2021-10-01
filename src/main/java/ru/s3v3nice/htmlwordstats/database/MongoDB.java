@@ -5,7 +5,6 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import ru.s3v3nice.htmlwordstats.Application;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,10 +39,11 @@ public class MongoDB implements IDatabase {
      * Сохраняет в базу данных результаты поиска уникальных слов в тексте
      * вместе с путем к исходному html файлу
      *
-     * @param filePath путь к html файлу
+     * @param filePath  путь к html файлу
      * @param wordStats словарь вхождений уникальных слов (слово -> количество)
+     * @return true, если получилось сохранить, или false, если не получилось
      */
-    public void saveWordStats(String filePath, Map<String, Integer> wordStats) {
+    public boolean saveWordStats(String filePath, Map<String, Integer> wordStats) {
         MongoCollection<Document> collection = database.getCollection("saved_results");
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         Document document = new Document()
@@ -53,9 +53,10 @@ public class MongoDB implements IDatabase {
 
         try {
             collection.insertOne(document);
-            System.out.println("Результаты успешно сохранены в базу данных.");
         } catch (MongoCommandException e) {
-            Application.getInstance().logError("Не удалось сохранить результаты в базу данных (MongoDB)!");
+            return false;
         }
+
+        return true;
     }
 }

@@ -4,7 +4,6 @@ import ru.s3v3nice.htmlwordstats.database.MongoDB;
 import ru.s3v3nice.htmlwordstats.html.HTMLTextTool;
 import ru.s3v3nice.htmlwordstats.log.Log;
 
-import java.io.File;
 import java.util.Scanner;
 
 public class Main {
@@ -15,22 +14,16 @@ public class Main {
                 new HTMLTextTool(),
                 new MongoDB("htmlwordstats")
         );
-        String path;
+        String htmlPath;
 
         if (args.length > 0) {
-            path = args[0];
+            htmlPath = args[0];
         } else {
             System.out.print("Путь до html файла: ");
             Scanner scanner = new Scanner(System.in);
-            path = scanner.nextLine();
+            htmlPath = scanner.nextLine();
         }
 
-        File file = new File(path);
-        if (!file.exists() || !file.isFile()) {
-            application.logError("Неверный путь до html файла: " + path);
-            return;
-        }
-
-        application.printWordStats(path);
+        application.run(htmlPath);
     }
 }

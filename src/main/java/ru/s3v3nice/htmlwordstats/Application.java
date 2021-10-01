@@ -34,33 +34,57 @@ public class Application {
     }
 
     /**
+     * Печатает в консоль и сохраняет в базу данных (при возможности)
+     * уникальные слова из текста html файла
+     *
+     * @param htmlPath путь к html файлу
+     */
+    public void run(String htmlPath) {
+        Map<String, Integer> wordStats = htmlTextTool.getWordStats(htmlPath);
+        if (wordStats == null) {
+            logError("Не удалось прочитать html файл: " + htmlPath);
+            return;
+        }
+
+        printWordStats(wordStats);
+        trySaveWordStats(htmlPath, wordStats);
+    }
+
+    /**
+     * Печатает в консоль уникальные слова,
+     * сортированные по частоте встречаемости
+     *
+     * @param wordStats словарь вхождений уникальных слов (слово -> количество)
+     */
+    public void printWordStats(Map<String, Integer> wordStats) {
+        List<String> words = new ArrayList<>(wordStats.keySet());
+        words.sort((word1, word2) -> wordStats.get(word2).compareTo(wordStats.get(word1)));
+        words.forEach((word) -> System.out.println(word + " --- " + wordStats.get(word)));
+    }
+
+    /**
+     * Пытается сохранить в базу данных результаты поиска уникальных слов
+     *
+     * @param htmlPath  путь к исходному html файлу
+     * @param wordStats словарь вхождений уникальных слов (слово -> количество)
+     */
+    public void trySaveWordStats(String htmlPath, Map<String, Integer> wordStats) {
+        boolean isSavedInDB = database.saveWordStats(htmlPath, wordStats);
+
+        if (isSavedInDB) {
+            System.out.println("Результаты успешно сохранены в базу данных.");
+        } else {
+            logError("Не удалось сохранить результаты в базу данных!");
+        }
+    }
+
+    /**
      * Логирует ошибку в консоль и лог-файл
      *
      * @param msg сообщение об ошибке
      */
     public void logError(String msg) {
         log.error(msg);
-    }
-
-    /**
-     * Печатает в консоль уникальные слова в тексте html файла,
-     * сортированные по частоте встречаемости, а также сохраняет
-     * результаты в базу данных
-     *
-     * @param filePath путь к html файлу
-     */
-    public void printWordStats(String filePath) {
-        Map<String, Integer> wordStats = htmlTextTool.getWordStats(filePath);
-        if (wordStats == null) {
-            logError("Ошибка при чтении html файла: " + filePath);
-            return;
-        }
-
-        List<String> words = new ArrayList<>(wordStats.keySet());
-        words.sort((word1, word2) -> wordStats.get(word2).compareTo(wordStats.get(word1)));
-        words.forEach((word) -> System.out.println(word + " --- " + wordStats.get(word)));
-
-        database.saveWordStats(filePath, wordStats);
     }
 
     /**
